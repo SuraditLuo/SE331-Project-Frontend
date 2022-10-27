@@ -1,6 +1,5 @@
 <template>
   <h1>Events For Good</h1>
-  <p>{{ this.events }}</p>
   <div class="events">
     <div class="search-box">
       <BaseInput

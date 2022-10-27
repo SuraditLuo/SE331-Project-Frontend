@@ -2,17 +2,24 @@
   <div>
     <h1>Add vaccine data</h1>
     <form @submit.prevent="savePatient">
-      <h3>Who is patient</h3>
-
+      <h3>Patient infomation</h3>
+      <BaseInput v-model="patient.id" type="text" label="id" />
       <BaseInput v-model="patient.name" type="text" label="name" />
       <BaseInput v-model="patient.surname" type="text" label="surname" />
+      <BaseInput v-model="patient.age" type="text" label="age" />
+      <BaseInput v-model="patient.hometown" type="text" label="hometown" />
       <h3>What vaccince patient get</h3>
       <BaseSelect
         :options="GStore.vaccines"
-        v-model="patient.vaccine.id"
+        v-model="patient.vaccines[0].id"
         label="Select an vaccince"
       />
-
+      <select v-model="patient.status">
+        <option disabled value="">Please select one</option>
+        <option>first dose</option>
+        <option>already get second dose</option>
+      </select>
+      <label for="already get second dose">already get second dose</label>
       <h3>doctor who take care of this patient?</h3>
 
       <BaseSelect
@@ -20,7 +27,7 @@
         v-model="patient.doctor.id"
         label="Select an doctor"
       />
-      <h3>The image of the Event</h3>
+      <h3>The image of the Patient</h3>
       <UploadImages @changed="handleImages" />
 
       <button type="submit" class="button-6">Submit</button>
@@ -44,7 +51,10 @@ export default {
         id: '',
         name: '',
         surname: '',
-        vaccine: { id: '', name: '' },
+        status: '',
+        age: '',
+        hometown: '',
+        vaccines: [{ id: '', name: '' }],
         doctor: { id: '', name: '' },
         imageUrls: []
       },

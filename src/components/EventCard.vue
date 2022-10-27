@@ -4,7 +4,7 @@
     :to="{ name: 'EventLayoutView', params: { id: event.id } }"
   >
     <div class="event-card">
-      <h4>{{ event.name }} on {{ event.surname }}</h4>
+      <h4>{{ event.name }} {{ event.surname }}</h4>
       <h4>{{ event.status }}</h4>
       <span>by</span>
       <h5>doctor {{ event.doctor.name }}</h5>

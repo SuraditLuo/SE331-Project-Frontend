@@ -1,8 +1,18 @@
 <template>
-  <p>{{ event.name }} {{ event.surname }}</p>
-  <p>{{ event.status }}</p>
-  <p>{{ event.hometown }}</p>
-  <img v-for="url in event.imageUrls" :key="url" :src="url" />
+  <p></p>
+  <p></p>
+  <h5>VaccinceStatus:{{ patients.status }}</h5>
+  <p v-for="vaccines in patients.vaccines" v-bind:key="vaccines.id">
+    vaccine: {{ vaccines.name }}
+  </p>
+  <h5>Hometown: {{ patients.hometown }}</h5>
+  <h5>Doctor who Inchange: {{ patients.doctor.name }}</h5>
+  <h3>Doctor comment</h3>
+  <p v-for="comments in patients.comments" v-bind:key="comments.id">
+    comment: {{ comments.content }}
+  </p>
+  <h3>Patient image</h3>
+  <img v-for="url in patients.imageUrls" :key="url" :src="url" />
 </template>
 
 <script>

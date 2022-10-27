@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import EventListView from '@/views/PatientListView.vue'
-import EventEditView from '@/views/event/PatientEditView.vue'
 import EventRegisterView from '@/views/event/PatientRegisterView.vue'
 import AboutView from '../views/AboutView.vue'
 import EventLayoutView from '@/views/event/PatientLayoutView.vue'
@@ -14,6 +13,7 @@ import PatientService from '@/services/PatientService'
 import DoctorService from '@/services/DoctorService.js'
 import Login from '@/views/LoginFormView.vue'
 import Register from '@/views/RegisterFormView.vue'
+import AddComment from '@/views/event/DoctorComment.vue'
 const routes = [
   {
     path: '/',
@@ -61,13 +61,14 @@ const routes = [
         component: EventRegisterView
       },
       {
-        path: 'edit',
-        name: 'EventEdit',
+        path: 'addcomment',
+        name: 'AddComment',
         props: true,
-        component: EventEditView
+        component: AddComment
       }
     ]
   },
+
   {
     path: '/add-event',
     name: 'AddEvent',
@@ -89,6 +90,7 @@ const routes = [
         })
     }
   },
+
   {
     path: '/404/:resource',
     name: '404Resource',
