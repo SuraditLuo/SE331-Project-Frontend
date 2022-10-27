@@ -11,5 +11,11 @@ export default {
   },
   PostComment(comment) {
     return apiClient.post('/comment', comment)
+  },
+  getUser() {
+    return apiClient.get('/user')
+  },
+  addDoctorUser(user) {
+    return apiClient.post('/changeRole', user)
   }
 }

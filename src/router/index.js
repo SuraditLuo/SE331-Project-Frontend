@@ -14,6 +14,7 @@ import DoctorService from '@/services/DoctorService.js'
 import Login from '@/views/LoginFormView.vue'
 import Register from '@/views/RegisterFormView.vue'
 import AddComment from '@/views/event/DoctorComment.vue'
+import AddRole from '@/views/AddRole.vue'
 const routes = [
   {
     path: '/',
@@ -86,6 +87,21 @@ const routes = [
         })
         .catch(() => {
           GStore.event = null
+          console.log('cannot load organizer')
+        })
+    }
+  },
+  {
+    path: '/add-role',
+    name: 'AddRole',
+    component: AddRole,
+    beforeEnter: () => {
+      return DoctorService.getUser()
+        .then((response) => {
+          GStore.users = response.data
+        })
+        .catch(() => {
+          GStore.users = null
           console.log('cannot load organizer')
         })
     }

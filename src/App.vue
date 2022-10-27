@@ -36,7 +36,7 @@
     <router-link :to="{ name: 'about' }">About</router-link> |
     <span v-if="isAdmin">
       <router-link :to="{ name: 'AddEvent' }"> New Event</router-link> |
-      <router-link :to="{ name: 'EventList' }"> Add Role</router-link>
+      <router-link :to="{ name: 'AddRole' }"> Add Role</router-link>
     </span>
   </nav>
   <router-view />

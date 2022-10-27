@@ -3,7 +3,7 @@
     <h1>{{ GStore.patients.name }} {{ GStore.patients.surname }}</h1>
     <div id="nav">
       <router-link :to="{ name: 'EventDetails' }">Details</router-link>
-      <span v-if="isAdmin">
+      <span v-if="isDoctor">
         |
         <router-link :to="{ name: 'AddComment' }">AddComment</router-link>
       </span>
@@ -19,8 +19,8 @@ export default {
     currentUser() {
       return localStorage.getItem('user')
     },
-    isAdmin() {
-      return AuthService.hasRoles('ROLE_ADMIN')
+    isDoctor() {
+      return AuthService.hasRoles('ROLE_DOCTOR')
     }
   }
 }

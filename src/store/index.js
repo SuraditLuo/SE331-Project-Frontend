@@ -4,5 +4,6 @@ export default reactive({
   patients: null,
   organizers: null,
   vaccines: null,
+  users: null,
   currentUser: JSON.parse(localStorage.getItem('user'))
 })
