@@ -101,7 +101,6 @@ export default {
 }
 
 table {
-  margin-right: 40rem;
-  margin-left: 30.5rem;
+  margin-left: 51rem;
 }
 </style>
