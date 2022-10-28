@@ -2,10 +2,14 @@
   <div v-if="GStore.patients">
     <h1>{{ GStore.patients.name }} {{ GStore.patients.surname }}</h1>
     <div id="nav">
-      <router-link :to="{ name: 'EventDetails' }">Details</router-link>
-      <span v-if="isDoctor">
+      <router-link :to="{ name: 'PatientDetails' }">About</router-link>
+      <span
+        v-if="
+          isDoctor && GStore.currentUser.username == GStore.patients.doctor.name
+        "
+      >
         |
-        <router-link :to="{ name: 'AddComment' }">AddComment</router-link>
+        <router-link :to="{ name: 'AddComment' }">Add Comment</router-link>
       </span>
     </div>
     <router-view :patients="GStore.patients" />

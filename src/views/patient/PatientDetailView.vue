@@ -6,7 +6,7 @@
     vaccine: {{ vaccines.name }}
   </p>
   <h5>Hometown: {{ patients.hometown }}</h5>
-  <h5>Doctor who Inchange: {{ patients.doctor.name }}</h5>
+  <h5>Doctor who's in charge: {{ patients.doctor.name }}</h5>
   <h3>Doctor comment</h3>
   <p v-for="comments in patients.comments" v-bind:key="comments.id">
     comment: {{ comments.content }}

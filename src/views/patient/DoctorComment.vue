@@ -3,7 +3,7 @@
     <form @submit.prevent="saveComment">
       <BaseInput v-model="comment.content" type="text" label="review" />
 
-      <p>Doctor who in change: {{ patients.doctor.name }}</p>
+      <p>Sincerely: {{ patients.doctor.name }}</p>
 
       <button type="submit" class="button-6">Submit</button>
     </form>
@@ -33,11 +33,11 @@ export default {
         .then((response) => {
           console.log(response)
           this.$router.push({
-            name: 'EventDetails',
+            name: 'PatientDetails',
             params: { id: response.data.id }
           })
           this.GStore.flashMessage =
-            'You are successfully add a new event for ' + response.data.title
+            'Successfully add comment to ' + response.data.name
           setTimeout(() => {
             this.GStore.flashMessage = ''
           }, 3000)

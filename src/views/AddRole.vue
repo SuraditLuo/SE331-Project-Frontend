@@ -31,10 +31,12 @@ export default {
         .then((response) => {
           console.log(response)
           this.$router.push({
-            name: 'EventList'
+            name: 'PatientList'
           })
           this.GStore.flashMessage =
-            'You are successfully add a new event for ' + response.data.title
+            'You are successfully updated ' +
+            response.data.username +
+            ' role to doctor.'
           setTimeout(() => {
             this.GStore.flashMessage = ''
           }, 3000)

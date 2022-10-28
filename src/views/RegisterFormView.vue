@@ -84,7 +84,7 @@ export default {
   },
   mounted() {
     if (this.GStore.currentUser) {
-      this.$router.push('/event')
+      this.$router.push('/patient')
     }
   },
   methods: {

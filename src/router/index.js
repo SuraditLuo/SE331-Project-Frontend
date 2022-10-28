@@ -1,25 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import EventListView from '@/views/PatientListView.vue'
-import EventRegisterView from '@/views/event/PatientRegisterView.vue'
+import PatientListView from '@/views/PatientListView.vue'
 import AboutView from '../views/AboutView.vue'
-import EventLayoutView from '@/views/event/PatientLayoutView.vue'
-import EventDetailView from '@/views/event/PatientDetailView.vue'
+import PatientLayoutView from '@/views/patient/PatientLayoutView.vue'
+import PatientDetailView from '@/views/patient/PatientDetailView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 import NetWorkErrorView from '@/views/NetworkErrorView.vue'
-import AddEvent from '@/views/PatientForm.vue'
+import AddPatient from '@/views/PatientForm.vue'
 import NProgress from 'nprogress'
 import GStore from '@/store'
 import PatientService from '@/services/PatientService'
 import DoctorService from '@/services/DoctorService.js'
 import Login from '@/views/LoginFormView.vue'
 import Register from '@/views/RegisterFormView.vue'
-import AddComment from '@/views/event/DoctorComment.vue'
+import AddComment from '@/views/patient/DoctorComment.vue'
 import AddRole from '@/views/AddRole.vue'
 const routes = [
   {
     path: '/',
-    name: 'EventList',
-    component: EventListView,
+    name: 'PatientList',
+    component: PatientListView,
     props: (route) => ({ page: parseInt(route.query.page) || 1 })
   },
   {
@@ -28,11 +27,11 @@ const routes = [
     component: AboutView
   },
   {
-    path: '/event/:id',
-    name: 'EventLayoutView',
-    component: EventLayoutView,
+    path: '/patient/:id',
+    name: 'PatientLayoutView',
+    component: PatientLayoutView,
     beforeEnter: (to) => {
-      return PatientService.getEvent(to.params.id)
+      return PatientService.getPatient(to.params.id)
         .then((response) => {
           GStore.patients = response.data
         })
@@ -40,7 +39,7 @@ const routes = [
           if (error.response && error.response.start == 404) {
             return {
               name: '404Resource',
-              parames: { resource: 'event' }
+              parames: { resource: 'patient' }
             }
           } else {
             return { name: 'NetworkError' }
@@ -51,15 +50,9 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'EventDetails',
-        component: EventDetailView,
+        name: 'PatientDetails',
+        component: PatientDetailView,
         props: true
-      },
-      {
-        path: 'register',
-        name: 'EventRegister',
-        props: true,
-        component: EventRegisterView
       },
       {
         path: 'addcomment',
@@ -71,23 +64,23 @@ const routes = [
   },
 
   {
-    path: '/add-event',
-    name: 'AddEvent',
-    component: AddEvent,
+    path: '/add-patient',
+    name: 'AddPatient',
+    component: AddPatient,
     beforeEnter: () => {
-      return DoctorService.getEventes()
+      return DoctorService.getPatients()
         .then((response) => {
           GStore.patients = response.data
-          DoctorService.getOrganizers().then((response) => {
-            GStore.organizers = response.data
+          DoctorService.getDoctors().then((response) => {
+            GStore.doctors = response.data
           })
           DoctorService.getVaccine().then((response) => {
             GStore.vaccines = response.data
           })
         })
         .catch(() => {
-          GStore.event = null
-          console.log('cannot load organizer')
+          GStore.patient = null
+          console.log('cannot load doctor')
         })
     }
   },
@@ -102,7 +95,7 @@ const routes = [
         })
         .catch(() => {
           GStore.users = null
-          console.log('cannot load organizer')
+          console.log('cannot load doctor')
         })
     }
   },

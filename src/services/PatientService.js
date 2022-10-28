@@ -11,16 +11,16 @@ import apiClient from '@/services/AxiosClient.js'
 // })
 
 export default {
-  getEvents(perPage, page) {
+  getPatients(perPage, page) {
     return apiClient.get('/patient?_limit=' + perPage + '&_page=' + page)
   },
-  getEvent(id) {
+  getPatient(id) {
     return apiClient.get('/patient/' + id)
   },
   savePatient(patient) {
     return apiClient.post('/patient', patient)
   },
-  getEventByKeyword(keyword, perPage, page) {
+  getPatientByKeyword(keyword, perPage, page) {
     return apiClient.get(
       'patient?_limit=' + perPage + '&_page=' + page + '&name=' + keyword
     )

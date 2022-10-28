@@ -1,9 +1,9 @@
 import apiClient from '@/services/AxiosClient.js'
 export default {
-  getOrganizers() {
+  getDoctors() {
     return apiClient.get('/doctor')
   },
-  getEventes() {
+  getPatients() {
     return apiClient.get('/patient')
   },
   getVaccine() {

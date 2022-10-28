@@ -1,7 +1,4 @@
 <template>
-  <div id="flashMessage" v-if="GStore.flashMessage">
-    {{ GStore.flashMessage }}
-  </div>
   <div id="nav">
     <nav class="navbar navbar-expand">
       <ul v-if="!GStore.currentUser" class="navbar-nav ml-auto">
@@ -20,7 +17,7 @@
         <li class="nav-item">
           <router-link to="/" class="nav-link">
             <font-awesome-icon icon="user" />
-            {{ GStore.currentUser.name }}
+            {{ GStore.currentUser.username }}
           </router-link>
         </li>
         <li class="nav-item">
@@ -32,10 +29,9 @@
     </nav>
   </div>
   <nav>
-    <router-link :to="{ name: 'EventList' }">Home</router-link> |
-    <router-link :to="{ name: 'about' }">About</router-link> |
+    <router-link :to="{ name: 'PatientList' }">Home</router-link>
     <span v-if="isAdmin">
-      <router-link :to="{ name: 'AddEvent' }"> New Event</router-link> |
+      | <router-link :to="{ name: 'AddPatient' }"> New Patient</router-link> |
       <router-link :to="{ name: 'AddRole' }"> Add Role</router-link>
     </span>
   </nav>
@@ -56,7 +52,7 @@ export default {
   methods: {
     logout() {
       AuthService.logout()
-      this.$router.go()
+      this.$router.push({ path: '/' })
     }
   }
 }

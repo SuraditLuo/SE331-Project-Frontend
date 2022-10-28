@@ -1,50 +1,52 @@
 <template>
-  <h1>Events For Good</h1>
-  <div class="events">
-    <div class="search-box">
-      <BaseInput
-        v-model="keyword"
-        type="text"
-        label="Search..."
-        @input="updateKeyword"
-      />
+  <h1>Injection need</h1>
+  <span v-if="isUser">
+    <div class="patients">
+      <div class="search-box">
+        <BaseInput
+          v-model="keyword"
+          type="text"
+          label="Search..."
+          @input="updateKeyword"
+        />
+      </div>
+
+      <PatientCard
+        v-for="patient in patients"
+        :key="patient.id"
+        :patient="patient"
+      ></PatientCard>
+
+      <div class="pagination">
+        <router-link
+          id="page-prev"
+          :to="{ name: 'PatientList', query: { page: page - 1 } }"
+          rel="prev"
+          v-if="page != 1"
+        >
+          Prev Page
+        </router-link>
+
+        <router-link
+          id="page-next"
+          :to="{ name: 'PatientList', query: { page: page + 1 } }"
+          rel="next"
+          v-if="hasNextPage"
+        >
+          Next Page
+        </router-link>
+      </div>
     </div>
-
-    <EventCard
-      v-for="event in events"
-      :key="event.id"
-      :event="event"
-    ></EventCard>
-
-    <div class="pagination">
-      <router-link
-        id="page-prev"
-        :to="{ name: 'EventList', query: { page: page - 1 } }"
-        rel="prev"
-        v-if="page != 1"
-      >
-        Prev Page
-      </router-link>
-
-      <router-link
-        id="page-next"
-        :to="{ name: 'EventList', query: { page: page + 1 } }"
-        rel="next"
-        v-if="hasNextPage"
-      >
-        Next Page
-      </router-link>
-    </div>
-  </div>
+  </span>
 </template>
 
 <script>
 // @ is an alias to /src
-import EventCard from '@/components/EventCard.vue'
-import EventService from '@/services/PatientService.js'
-
+import PatientCard from '@/components/PatientCard.vue'
+import PatientService from '@/services/PatientService.js'
+import AuthService from '@/services/AuthService.js'
 export default {
-  name: 'EventListView',
+  name: 'PatientListView',
   props: {
     page: {
       type: Number,
@@ -52,22 +54,22 @@ export default {
     }
   },
   components: {
-    EventCard
+    PatientCard
   },
   data() {
     return {
-      events: null,
-      totalEvents: 0,
+      patients: null,
+      totalPatients: 0,
       keyword: null
     }
   },
   // eslint-disable-next-line no-unused-vars
   beforeRouteEnter(routeTo, routeFrom, next) {
-    EventService.getEvents(3, parseInt(routeTo.query.page) || 1)
+    PatientService.getPatients(3, parseInt(routeTo.query.page) || 1)
       .then((response) => {
         next((comp) => {
-          comp.events = response.data
-          comp.totalEvents = response.headers['x-total-count']
+          comp.patients = response.data
+          comp.totalPatients = response.headers['x-total-count']
         })
       })
       .catch(() => {
@@ -77,12 +79,12 @@ export default {
   beforeRouteUpdate(routeTo) {
     var queryFunction
     if (this.keyword == null || this.keyword === '') {
-      queryFunction = EventService.getEvents(
+      queryFunction = PatientService.getPatients(
         3,
         parseInt(routeTo.query.page) || 1
       )
     } else {
-      queryFunction = EventService.getEventByKeyword(
+      queryFunction = PatientService.getPatientByKeyword(
         this.keyword,
         3,
         parseInt(routeTo.query.page) || 1
@@ -91,8 +93,8 @@ export default {
 
     queryFunction
       .then((response) => {
-        this.events = response.data // <---
-        this.totalEvents = response.headers['x-total-count'] // <---
+        this.patients = response.data // <---
+        this.totalPatients = response.headers['x-total-count'] // <---
       })
       .catch(() => {
         return { name: 'NetworkError' } // <---
@@ -102,17 +104,17 @@ export default {
     updateKeyword() {
       var queryFunction
       if (this.keyword === '') {
-        queryFunction = EventService.getEvents(3, 1)
+        queryFunction = PatientService.getPatients(3, 1)
       } else {
-        queryFunction = EventService.getEventByKeyword(this.keyword, 3, 1)
+        queryFunction = PatientService.getPatientByKeyword(this.keyword, 3, 1)
       }
 
       queryFunction
         .then((response) => {
-          this.events = response.data
-          console.log(this.events)
-          this.totalEvents = response.headers['x-total-count']
-          console.log(this.totalEvents)
+          this.patients = response.data
+          console.log(this.patients)
+          this.totalPatients = response.headers['x-total-count']
+          console.log(this.totalPatients)
         })
         .catch(() => {
           return { name: 'NetworkError' }
@@ -122,14 +124,17 @@ export default {
 
   computed: {
     hasNextPage() {
-      let totalPages = Math.ceil(this.totalEvents / 3)
+      let totalPages = Math.ceil(this.totalPatients / 3)
       return this.page < totalPages
+    },
+    isUser() {
+      return AuthService.hasRoles('ROLE_USER')
     }
   }
 }
 </script>
 <style scoped>
-.events {
+.patients {
   display: flex;
   flex-direction: column;
   align-items: center;

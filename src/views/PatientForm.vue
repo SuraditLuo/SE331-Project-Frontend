@@ -3,32 +3,63 @@
     <h1>Add vaccine data</h1>
     <form @submit.prevent="savePatient">
       <h3>Patient infomation</h3>
-      <BaseInput v-model="patient.id" type="text" label="id" />
       <BaseInput v-model="patient.name" type="text" label="name" />
       <BaseInput v-model="patient.surname" type="text" label="surname" />
       <BaseInput v-model="patient.age" type="text" label="age" />
       <BaseInput v-model="patient.hometown" type="text" label="hometown" />
-      <h3>What vaccince patient get</h3>
-      <BaseSelect
-        :options="GStore.vaccines"
-        v-model="patient.vaccines[0].id"
-        label="Select an vaccince"
+      <label>Vaccine status</label>
+
+      <input
+        type="radio"
+        id="one"
+        value="get only one dose"
+        v-model="patient.status"
+        v-on:click="editValue(vaccine)"
       />
-      <select v-model="patient.status">
-        <option disabled value="">Please select one</option>
-        <option>first dose</option>
-        <option>already get second dose</option>
-      </select>
-      <label for="already get second dose">already get second dose</label>
+      <label for="get only one dose">get only one dose</label>
+
+      <input
+        type="radio"
+        id="two"
+        value="already get second doses"
+        v-model="patient.status"
+        v-on:click="editValue(vaccines)"
+      />
+      <label for="already get second doses">already get second doses</label>
+
+      <div v-if="patient.status === 'get only one dose'">
+        <BaseSelect
+          :options="GStore.vaccines"
+          v-model="patient.vaccines[0].id"
+          label="Select the vaccince"
+        />
+      </div>
+
+      <div v-if="patient.status === 'already get second doses'">
+        <BaseSelect
+          :options="GStore.vaccines"
+          v-model="patient.vaccines[0].id"
+          label="Select first vaccince"
+        />
+        <BaseSelect
+          :options="GStore.vaccines"
+          v-model="patient.vaccines[1].id"
+          label="Select second vaccince"
+        />
+      </div>
       <h3>doctor who take care of this patient?</h3>
 
       <BaseSelect
-        :options="GStore.organizers"
+        :options="GStore.doctors"
         v-model="patient.doctor.id"
         label="Select an doctor"
       />
-      <h3>The image of the Patient</h3>
-      <UploadImages @changed="handleImages" />
+      <h3>Choose profile image</h3>
+      <UploadImages
+        @changed="handleImages"
+        :max="1"
+        maxError="Max files exceed"
+      />
 
       <button type="submit" class="button-6">Submit</button>
     </form>
@@ -54,14 +85,19 @@ export default {
         status: '',
         age: '',
         hometown: '',
-        vaccines: [{ id: '', name: '' }],
+        vaccines: [],
         doctor: { id: '', name: '' },
         imageUrls: []
       },
-      files: []
+      files: [],
+      vaccine: [{ id: '' }],
+      vaccines: [{ id: '' }, { id: '' }]
     }
   },
   methods: {
+    editValue(value) {
+      this.patient.vaccines = value
+    },
     savePatient() {
       Promise.all(
         this.files.map((file) => {
@@ -73,11 +109,10 @@ export default {
           .then((response) => {
             console.log(response)
             this.$router.push({
-              name: 'EventDetails',
+              name: 'PatientDetails',
               params: { id: response.data.id }
             })
-            this.GStore.flashMessage =
-              'You are successfully add a new event for ' + response.data.title
+            this.GStore.flashMessage = 'Successfully add new patient.'
             setTimeout(() => {
               this.GStore.flashMessage = ''
             }, 3000)
