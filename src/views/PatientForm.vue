@@ -1,31 +1,65 @@
 <template>
   <div>
-    <h1>Add vaccine data</h1>
     <form @submit.prevent="savePatient">
-      <h3>Patient infomation</h3>
-      <BaseInput v-model="patient.name" type="text" label="name" />
-      <BaseInput v-model="patient.surname" type="text" label="surname" />
-      <BaseInput v-model="patient.age" type="text" label="age" />
-      <BaseInput v-model="patient.hometown" type="text" label="hometown" />
-      <label>Vaccine status</label>
-
-      <input
-        type="radio"
-        id="one"
-        value="get only one dose"
-        v-model="patient.status"
-        v-on:click="editValue(vaccine)"
-      />
-      <label for="get only one dose">get only one dose</label>
-
-      <input
-        type="radio"
-        id="two"
-        value="already get second doses"
-        v-model="patient.status"
-        v-on:click="editValue(vaccines)"
-      />
-      <label for="already get second doses">already get second doses</label>
+      <h3>Patient information</h3>
+      <table>
+        <tr>
+          <table class="info">
+            <tr>
+              <td>
+                <BaseInput v-model="patient.name" type="text" label="name" />
+              </td>
+              <td>
+                <BaseInput
+                  v-model="patient.surname"
+                  type="text"
+                  label="surname"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <BaseInput v-model="patient.age" type="text" label="age" />
+              </td>
+              <td>
+                <BaseInput
+                  v-model="patient.hometown"
+                  type="text"
+                  label="hometown"
+                />
+              </td>
+            </tr>
+          </table>
+        </tr>
+        <tr>
+          <table class="checkbox">
+            <tr>
+              <td>
+                <input
+                  type="radio"
+                  id="one"
+                  value="get only one dose"
+                  v-model="patient.status"
+                  v-on:click="editValue(vaccine)"
+                />
+                <label for="get only one dose">get only one dose</label>
+              </td>
+              <td>
+                <input
+                  type="radio"
+                  id="two"
+                  value="already get second doses"
+                  v-model="patient.status"
+                  v-on:click="editValue(vaccines)"
+                />
+                <label for="already get second doses"
+                  >already get second doses</label
+                >
+              </td>
+            </tr>
+          </table>
+        </tr>
+      </table>
 
       <div v-if="patient.status === 'get only one dose'">
         <BaseSelect
@@ -47,7 +81,7 @@
           label="Select second vaccince"
         />
       </div>
-      <h3>doctor who take care of this patient?</h3>
+      <h4>Doctor who take care of this patient?</h4>
 
       <BaseSelect
         :options="GStore.doctors"
@@ -63,8 +97,6 @@
 
       <button type="submit" class="button-6">Submit</button>
     </form>
-
-    <pre>{{ patient }}</pre>
   </div>
 </template>
 
@@ -130,6 +162,12 @@ export default {
 </script>
 <style scoped>
 /* CSS */
+h3 {
+  border-radius: 5rem;
+  background-color: azure;
+  border: 0.25rem solid lightblue;
+  margin-bottom: 3rem;
+}
 .button-6 {
   align-items: center;
   background-color: #ffffff;
@@ -170,6 +208,11 @@ export default {
   transform: translateY(-1px);
 }
 
+table {
+  align-content: center;
+  display: inline-table;
+  margin-bottom: 2rem;
+}
 .button-6:active {
   background-color: #f0f0f1;
   border-color: rgba(0, 0, 0, 0.15);

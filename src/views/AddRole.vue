@@ -2,15 +2,17 @@
   <div>
     <form @submit.prevent="saveRole">
       <BaseInput v-model="user.id" type="Text" label="Userid" />
-
-      <p v-for="user in GStore.users" v-bind:key="user.id">
-        user: {{ user.username }}
-      </p>
-
+      <h5>List of user</h5>
+      <table>
+        <tr>
+          <th>Username</th>
+        </tr>
+        <tr v-for="user in GStore.users" v-bind:key="user.id">
+          <td>{{ user.username }}</td>
+        </tr>
+      </table>
       <button type="submit" class="button-6">Submit</button>
     </form>
-
-    <pre>{{ user }}</pre>
   </div>
 </template>
 
@@ -96,5 +98,10 @@ export default {
   box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
   color: rgba(0, 0, 0, 0.65);
   transform: translateY(0);
+}
+
+table {
+  margin-right: 40rem;
+  margin-left: 30.5rem;
 }
 </style>

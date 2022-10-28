@@ -1,14 +1,12 @@
 <template>
   <div>
     <form @submit.prevent="saveComment">
-      <BaseInput v-model="comment.content" type="text" label="review" />
+      <BaseInput v-model="comment.content" type="text" label="A feedback" />
 
       <p>Sincerely: {{ patients.doctor.name }}</p>
 
       <button type="submit" class="button-6">Submit</button>
     </form>
-
-    <pre>{{ comment }}</pre>
   </div>
 </template>
 
@@ -33,8 +31,7 @@ export default {
         .then((response) => {
           console.log(response)
           this.$router.push({
-            name: 'PatientDetails',
-            params: { id: response.data.id }
+            name: 'PatientList'
           })
           this.GStore.flashMessage =
             'Successfully add comment to ' + response.data.name
@@ -100,5 +97,8 @@ export default {
   box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
   color: rgba(0, 0, 0, 0.65);
   transform: translateY(0);
+}
+div {
+  margin-top: 2.5rem;
 }
 </style>

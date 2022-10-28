@@ -134,6 +134,11 @@ export default {
 }
 </script>
 <style scoped>
+h1 {
+  border-radius: 5rem;
+  background-color: azure;
+  border: 0.25rem solid lightblue;
+}
 .patients {
   display: flex;
   flex-direction: column;

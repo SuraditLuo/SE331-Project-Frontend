@@ -59,6 +59,17 @@ export default {
 </script>
 
 <style>
+h5,
+h1,
+li,
+p,
+h3 {
+  font-family: 'Courier New', Courier, monospace;
+}
+h4 {
+  font-size: 20px;
+  font-family: 'Courier New', Courier, monospace;
+}
 @keyframes yellowfade {
   from {
     background: yellow;
@@ -92,9 +103,6 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #51e2f5;
-}
-h4 {
-  font-size: 20px;
 }
 b,
 strong {
