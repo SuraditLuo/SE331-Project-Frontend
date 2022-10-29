@@ -5,7 +5,7 @@
         <h5>Hometown: {{ patients.hometown }}</h5>
       </td>
       <td>
-        <h5>VaccinceStatus:{{ patients.status }}</h5>
+        <h5>VaccinceStatus: {{ patients.status }}</h5>
       </td>
     </tr>
     <tr>
@@ -21,13 +21,8 @@
       </td>
       <td class="none1"></td>
     </tr>
-    <tr>
-      <td>
-        <h5>Doctor who's in charge: {{ patients.doctor.name }}</h5>
-      </td>
-      <td class="none"></td>
-    </tr>
   </table>
+  <h5>Doctor who's in charge: {{ patients.doctor.name }}</h5>
   <h3>Doctor comment</h3>
   <div
     class="comment"
@@ -48,6 +43,8 @@ export default {
 table {
   display: inline-table;
   margin-top: 2.5rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 td {
   display: inline-block;
