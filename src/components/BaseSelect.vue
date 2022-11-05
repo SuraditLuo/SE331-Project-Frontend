@@ -16,7 +16,7 @@
       :key="option.id"
       :selected="option.id === modelValue.id"
     >
-      {{ option.name }}
+      {{ option.firstname }}
     </option>
   </select>
 </template>

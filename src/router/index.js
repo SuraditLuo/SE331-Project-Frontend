@@ -14,6 +14,8 @@ import Login from '@/views/LoginFormView.vue'
 import Register from '@/views/RegisterFormView.vue'
 import AddComment from '@/views/patient/DoctorComment.vue'
 import AddRole from '@/views/AddRole.vue'
+import AddDoctor from '@/views/AddDoctorForm.vue'
+import UserInfo from '@/views/UserInfoView.vue'
 const routes = [
   {
     path: '/',
@@ -25,6 +27,27 @@ const routes = [
     path: '/about',
     name: 'about',
     component: AboutView
+  },
+  {
+    path: '/userinfo',
+    name: 'UserInfo',
+    component: UserInfo,
+    beforeEnter: () => {
+      return DoctorService.getUserID(GStore.currentUser.id)
+        .then((response) => {
+          GStore.users = response.data
+        })
+        .catch((error) => {
+          if (error.response && error.response.start == 404) {
+            return {
+              name: '404Resource',
+              parames: { resource: 'patient' }
+            }
+          } else {
+            return { name: 'NetworkError' }
+          }
+        })
+    }
   },
   {
     path: '/patient/:id',
@@ -92,6 +115,9 @@ const routes = [
       return DoctorService.getUser()
         .then((response) => {
           GStore.users = response.data
+          DoctorService.getDoctors().then((response) => {
+            GStore.doctors = response.data
+          })
         })
         .catch(() => {
           GStore.users = null
@@ -125,6 +151,27 @@ const routes = [
     path: '/network-error',
     name: 'NetworkError',
     component: NetWorkErrorView
+  },
+  {
+    path: '/add-doctor',
+    name: 'AddDoctor',
+    component: AddDoctor,
+    beforeEnter: () => {
+      return DoctorService.getPatients()
+        .then((response) => {
+          GStore.patients = response.data
+          DoctorService.getDoctors().then((response) => {
+            GStore.doctors = response.data
+          })
+          DoctorService.getVaccine().then((response) => {
+            GStore.vaccines = response.data
+          })
+        })
+        .catch(() => {
+          GStore.patient = null
+          console.log('cannot load doctor')
+        })
+    }
   }
 ]
 

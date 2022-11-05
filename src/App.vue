@@ -31,8 +31,16 @@
   <nav>
     <router-link :to="{ name: 'PatientList' }">Home</router-link>
     <span v-if="isAdmin">
-      | <router-link :to="{ name: 'AddPatient' }"> New Patient</router-link> |
+      |
+      <router-link :to="{ name: 'AddPatient' }"> Add Vaccine data </router-link>
+      |
       <router-link :to="{ name: 'AddRole' }"> Add Role</router-link>
+      |
+      <router-link :to="{ name: 'AddDoctor' }"> Add Doctor</router-link>
+    </span>
+    <span v-if="isUser">
+      |
+      <router-link :to="{ name: 'UserInfo' }"> UserInfo</router-link>
     </span>
   </nav>
   <router-view />
@@ -47,6 +55,9 @@ export default {
     },
     isAdmin() {
       return AuthService.hasRoles('ROLE_ADMIN')
+    },
+    isUser() {
+      return AuthService.hasRoles('ROLE_USER')
     }
   },
   methods: {

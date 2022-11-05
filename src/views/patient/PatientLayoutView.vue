@@ -1,12 +1,15 @@
 <template>
   <div v-if="GStore.patients">
     <img v-for="url in GStore.patients.imageUrls" :key="url" :src="url" />
-    <h1>{{ GStore.patients.name }} {{ GStore.patients.surname }}</h1>
+    <h1>{{ GStore.patients.firstname }} {{ GStore.patients.lastname }}</h1>
     <div id="nav">
       <router-link :to="{ name: 'PatientDetails' }">About</router-link>
+
       <span
         v-if="
-          isDoctor && GStore.currentUser.username == GStore.patients.doctor.name
+          GStore.patients.doctor.firstname != null &&
+          isDoctor &&
+          GStore.currentUser.username == GStore.patients.doctor.firstname
         "
       >
         |

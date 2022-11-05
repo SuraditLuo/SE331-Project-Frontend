@@ -52,6 +52,10 @@ export default {
   register(user) {
     return apiClient.post('/register', {
       username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      age: user.age,
+      address: user.address,
       email: user.email,
       password: user.password
     })

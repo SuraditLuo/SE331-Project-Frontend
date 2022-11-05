@@ -1,16 +1,44 @@
 <template>
   <div>
+    <h3>Add Role Doctor</h3>
     <form @submit.prevent="saveRole">
-      <BaseInput v-model="user.id" type="Text" label="Userid" />
-      <h5>List of user</h5>
-      <table>
-        <tr>
-          <th>Username</th>
-        </tr>
-        <tr v-for="user in GStore.users" v-bind:key="user.id">
-          <td>{{ user.username }}</td>
-        </tr>
-      </table>
+      <select v-model="user.id">
+        <option
+          v-for="(option, index) in GStore.users"
+          :value="index + 1"
+          :key="option.id"
+          :selected="index === user.id"
+        >
+          {{ option.username }}
+        </option>
+      </select>
+      <button type="submit" class="button-6">Submit</button>
+    </form>
+  </div>
+  <div>
+    <h3>Add Role Patient</h3>
+    <form @submit.prevent="AddRolePatient">
+      <select v-model="user.id">
+        <option
+          v-for="(option, index) in GStore.users"
+          :value="index + 1"
+          :key="option.id"
+          :selected="index === user.id"
+        >
+          {{ option.username }}
+        </option>
+      </select>
+      <button type="submit" class="button-6">Submit</button>
+    </form>
+  </div>
+  <div>
+    <h3>Remove Doctor Role</h3>
+    <form @submit.prevent="RemoveRoleDoctor">
+      <BaseSelect
+        :options="GStore.doctors"
+        v-model="user.id"
+        label="Select User"
+      />
       <button type="submit" class="button-6">Submit</button>
     </form>
   </div>
@@ -30,6 +58,44 @@ export default {
   methods: {
     saveRole() {
       return DoctorService.addDoctorUser(this.user)
+        .then((response) => {
+          console.log(response)
+          this.$router.push({
+            name: 'PatientList'
+          })
+          this.GStore.flashMessage =
+            'You are successfully updated ' +
+            response.data.username +
+            ' role to doctor.'
+          setTimeout(() => {
+            this.GStore.flashMessage = ''
+          }, 3000)
+        })
+        .catch(() => {
+          this.$router.push('NetworkError')
+        })
+    },
+    AddRolePatient() {
+      return DoctorService.addPatient(this.user)
+        .then((response) => {
+          console.log(response)
+          this.$router.push({
+            name: 'PatientList'
+          })
+          this.GStore.flashMessage =
+            'You are successfully updated ' +
+            response.data.username +
+            ' role to doctor.'
+          setTimeout(() => {
+            this.GStore.flashMessage = ''
+          }, 3000)
+        })
+        .catch(() => {
+          this.$router.push('NetworkError')
+        })
+    },
+    RemoveRoleDoctor() {
+      return DoctorService.RemoveDoctor(this.user)
         .then((response) => {
           console.log(response)
           this.$router.push({

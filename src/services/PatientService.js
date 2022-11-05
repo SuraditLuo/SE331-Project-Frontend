@@ -18,7 +18,10 @@ export default {
     return apiClient.get('/patient/' + id)
   },
   savePatient(patient) {
-    return apiClient.post('/patient', patient)
+    return apiClient.post('/save-vaccine', patient)
+  },
+  saveDoctor(patient) {
+    return apiClient.post('/save-doctor', patient)
   },
   getPatientByKeyword(keyword, perPage, page) {
     return apiClient.get(

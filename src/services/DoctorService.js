@@ -16,6 +16,18 @@ export default {
     return apiClient.get('/user')
   },
   addDoctorUser(user) {
-    return apiClient.post('/changeRole', user)
+    return apiClient.post('/add-doctor-role', user)
+  },
+  addPatient(user) {
+    return apiClient.post('/add-patient-role', user)
+  },
+  RemoveDoctor(user) {
+    return apiClient.post('/remove-doctor-role', user)
+  },
+  getdoctors(perPage, page) {
+    return apiClient.get('/doctor?_limit=' + perPage + '&_page=' + page)
+  },
+  getUserID(id) {
+    return apiClient.get('/user/' + id)
   }
 }

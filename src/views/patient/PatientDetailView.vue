@@ -22,7 +22,7 @@
       <td class="none1"></td>
     </tr>
   </table>
-  <h5>Doctor who's in charge: {{ patients.doctor.name }}</h5>
+  <h5>Doctor who's in charge: {{ patients.doctor.firstname }}</h5>
   <h3>Doctor comment</h3>
   <div
     class="comment"

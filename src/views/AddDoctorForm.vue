@@ -7,23 +7,12 @@
         v-model="patient.id"
         label="Select User"
       />
-
-      <h3>Select status</h3>
-      <select v-model="patient.status">
-        <option>get only one dose</option>
-        <option>already get second doses</option>
-      </select>
-      <h3>Select Vaccine</h3>
-      <select v-model="patient.vaccines[0].id">
-        <option
-          v-for="option in GStore.vaccines"
-          :value="option.id"
-          :key="option.id"
-          :selected="option.id === patient.id"
-        >
-          {{ option.name }}
-        </option>
-      </select>
+      <h3>Select Doctor</h3>
+      <BaseSelect
+        :options="GStore.doctors"
+        v-model="patient.doctor.id"
+        label="Select Doctor"
+      />
 
       <button type="submit" class="button-6">Submit</button>
     </form>
@@ -39,8 +28,7 @@ export default {
     return {
       patient: {
         id: '',
-        status: '',
-        vaccines: [{ id: '' }]
+        doctor: { id: '' }
       }
     }
   },
@@ -49,14 +37,14 @@ export default {
       this.patient.vaccines = value
     },
     savePatient() {
-      PatientService.savePatient(this.patient)
+      PatientService.saveDoctor(this.patient)
         .then((response) => {
           console.log(response)
           this.$router.push({
             name: 'PatientDetails',
             params: { id: response.data.id }
           })
-          this.GStore.flashMessage = 'Successfully add new patient.'
+          this.GStore.flashMessage = 'Successfully add doctor.'
           setTimeout(() => {
             this.GStore.flashMessage = ''
           }, 3000)

@@ -23,6 +23,30 @@
             <Field name="password" type="password" class="form-control" />
             <ErrorMessage name="password" class="error-feedback" />
           </div>
+          <div class="inline-block">
+            <div class="form-group">
+              <label for="firstname">First name</label>
+              <Field name="firstname" type="firstname" class="form-control" />
+              <ErrorMessage name="firstname" class="error-feedback" />
+            </div>
+            <div class="form-group">
+              <label for="lastname">Last name</label>
+              <Field name="lastname" type="lastname" class="form-control" />
+              <ErrorMessage name="lastname" class="error-feedback" />
+            </div>
+          </div>
+          <div class="inline-block">
+            <div class="form-group">
+              <label for="age">Age</label>
+              <Field name="age" type="age" class="form-control" />
+              <ErrorMessage name="age" class="error-feedback" />
+            </div>
+            <div class="form-group">
+              <label for="address">Address</label>
+              <Field name="address" type="address" class="form-control" />
+              <ErrorMessage name="address" class="error-feedback" />
+            </div>
+          </div>
           <div class="form-group">
             <button class="btn btn-primary btn-block" :disabled="loading">
               <span
@@ -63,17 +87,25 @@ export default {
         .string()
         .required('Username is required!')
         .min(3, 'Must be at least 3 charaacter!')
-        .max(20, 'Must be maximum 20 characters!'),
+        .max(20, 'Must be maximum at 20 characters!'),
       email: yup
         .string()
         .required('Email is required!')
         .email('Email is invalid!')
-        .max(50, 'Must be maxi,u, 50 characters!'),
+        .max(50, 'Must be maximum at 50 characters!'),
       password: yup
         .string()
         .required('Password is required!')
         .min(6, 'Must be at least 6 characters!')
-        .max(40, 'Must be maximum 40 characters!')
+        .max(40, 'Must be maximum at 40 characters!'),
+      firstname: yup.string().required('Firstname is required!'),
+      lastname: yup.string().required('Lastname is required!'),
+      age: yup
+        .number('Require number only!')
+        .required('Age is required!')
+        .positive('Age should be positive!')
+        .integer(),
+      address: yup.string().required('Address is required!')
     })
     return {
       successful: false,

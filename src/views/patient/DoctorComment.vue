@@ -3,7 +3,7 @@
     <form @submit.prevent="saveComment">
       <BaseInput v-model="comment.content" type="text" label="A feedback" />
 
-      <p>Sincerely: {{ patients.doctor.name }}</p>
+      <p>Sincerely: {{ patients.doctor.firstname }}</p>
 
       <button type="submit" class="button-6">Submit</button>
     </form>
