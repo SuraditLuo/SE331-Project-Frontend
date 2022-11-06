@@ -61,7 +61,7 @@ export default {
     handleLogin(user) {
       AuthService.login(user)
         .then(() => {
-          this.$router.push({ path: '/' })
+          this.$router.push({ name: 'HomePage' })
         })
         .catch(() => {
           this.message = 'could not login'

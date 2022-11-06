@@ -1,49 +1,42 @@
 <template>
   <div>
-    <form @submit.prevent="saveDoctor">
-      <h3>Patient select</h3>
+    <h3>Add Patient Role</h3>
+    <form @submit.prevent="AddRolePatient">
       <BaseSelect
-        :options="sortPatients"
-        v-model="patient.id"
+        :options="sortUsers"
+        v-model="user.id"
         label="Select User"
+        :value="user.id"
       />
-      <h3>Select Doctor</h3>
-      <BaseSelect
-        :options="GStore.doctors"
-        v-model="patient.doctor.id"
-        label="Select Doctor"
-      />
-
       <button type="submit" class="button-6">Submit</button>
     </form>
+    <pre>{{ user }}</pre>
   </div>
 </template>
 
 <script>
-import AdminService from '@/services/AdminService.js'
+import AdminService from '@/services/AdminService'
 export default {
   inject: ['GStore'],
   data() {
     return {
-      patient: {
-        id: '',
-        doctor: { id: '' }
+      user: {
+        id: ''
       }
     }
   },
   methods: {
-    editValue(value) {
-      this.patient.vaccines = value
-    },
-    saveDoctor() {
-      AdminService.saveDoctor(this.patient)
+    AddRolePatient() {
+      return AdminService.addPatientRole(this.user)
         .then((response) => {
           console.log(response)
           this.$router.push({
-            name: 'PatientDetails',
-            params: { id: response.data.id }
+            name: 'HomePage'
           })
-          this.GStore.flashMessage = 'Successfully add doctor.'
+          this.GStore.flashMessage =
+            'You are successfully updated ' +
+            response.data.username +
+            ' role to patient.'
           setTimeout(() => {
             this.GStore.flashMessage = ''
           }, 3000)
@@ -54,23 +47,17 @@ export default {
     }
   },
   computed: {
-    sortPatients: function () {
-      return this.GStore.patients.filter((i) => i.doctor == null)
+    sortUsers: function () {
+      return this.GStore.users.filter((i) => i.authorities.length == 1)
     }
   }
 }
 </script>
+
 <style scoped>
-/* CSS */
 select {
   margin-bottom: 0.75rem;
   border-radius: 1.5rem;
-}
-h3 {
-  border-radius: 5rem;
-  background-color: azure;
-  border: 0.25rem solid lightblue;
-  margin-bottom: 3rem;
 }
 .button-6 {
   align-items: center;
@@ -111,18 +98,5 @@ h3 {
 
 .button-6:hover {
   transform: translateY(-1px);
-}
-
-table {
-  align-content: center;
-  display: inline-table;
-  margin-bottom: 2rem;
-}
-.button-6:active {
-  background-color: #f0f0f1;
-  border-color: rgba(0, 0, 0, 0.15);
-  box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
-  color: rgba(0, 0, 0, 0.65);
-  transform: translateY(0);
 }
 </style>

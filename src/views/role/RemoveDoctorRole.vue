@@ -1,62 +1,40 @@
 <template>
   <div>
-    <form @submit.prevent="savePatient">
-      <h3>User select</h3>
+    <h3>Remove Doctor Role</h3>
+    <form @submit.prevent="RemoveRoleDoctor">
       <BaseSelect
-        :options="GStore.patients"
-        v-model="patient.id"
-        label="Select User"
+        :options="GStore.doctors"
+        v-model="user.id"
+        label="Select Doctor"
       />
-
-      <h3>Select status</h3>
-      <select v-model="patient.status">
-        <option>get only one dose</option>
-        <option>already get second doses</option>
-      </select>
-      <h3>Select Vaccine</h3>
-      <select v-model="patient.vaccines[0].id">
-        <option
-          v-for="option in GStore.vaccines"
-          :value="option.id"
-          :key="option.id"
-          :selected="option.id === patient.id"
-        >
-          {{ option.name }}
-        </option>
-      </select>
-
       <button type="submit" class="button-6">Submit</button>
     </form>
-    <pre> {{ patient }}</pre>
   </div>
 </template>
 
 <script>
-import PatientService from '@/services/PatientService.js'
+import AdminService from '@/services/AdminService'
 export default {
   inject: ['GStore'],
   data() {
     return {
-      patient: {
-        id: '',
-        status: '',
-        vaccines: [{ id: '' }]
+      user: {
+        id: ''
       }
     }
   },
   methods: {
-    editValue(value) {
-      this.patient.vaccines = value
-    },
-    savePatient() {
-      PatientService.savePatient(this.patient)
+    RemoveRoleDoctor() {
+      return AdminService.RemoveDoctor(this.user)
         .then((response) => {
           console.log(response)
           this.$router.push({
-            name: 'PatientDetails',
-            params: { id: response.data.id }
+            name: 'HomePage'
           })
-          this.GStore.flashMessage = 'Successfully add new patient.'
+          this.GStore.flashMessage =
+            'You are successfully removed ' +
+            response.data.username +
+            ' from role doctor.'
           setTimeout(() => {
             this.GStore.flashMessage = ''
           }, 3000)
@@ -68,13 +46,11 @@ export default {
   }
 }
 </script>
+
 <style scoped>
-/* CSS */
-h3 {
-  border-radius: 5rem;
-  background-color: azure;
-  border: 0.25rem solid lightblue;
-  margin-bottom: 3rem;
+select {
+  margin-bottom: 0.75rem;
+  border-radius: 1.5rem;
 }
 .button-6 {
   align-items: center;
@@ -103,6 +79,7 @@ h3 {
   touch-action: manipulation;
   vertical-align: baseline;
   width: auto;
+  border-radius: 1.5rem;
 }
 
 .button-6:hover,
@@ -114,18 +91,5 @@ h3 {
 
 .button-6:hover {
   transform: translateY(-1px);
-}
-
-table {
-  align-content: center;
-  display: inline-table;
-  margin-bottom: 2rem;
-}
-.button-6:active {
-  background-color: #f0f0f1;
-  border-color: rgba(0, 0, 0, 0.15);
-  box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
-  color: rgba(0, 0, 0, 0.65);
-  transform: translateY(0);
 }
 </style>

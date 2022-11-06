@@ -1,4 +1,7 @@
 <template>
+  <div>
+    <img v-for="url in GStore.users.imageUrls" :key="url" :src="url" />
+  </div>
   <h5>firstname: {{ GStore.users.firstname }}</h5>
 
   <h5>lastname: {{ GStore.users.lastname }}</h5>

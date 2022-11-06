@@ -1,51 +1,49 @@
 <template>
   <h1>Injection need</h1>
-  <span v-if="isUser">
-    <div class="patients">
-      <div class="search-box">
-        <BaseInput
-          v-model="keyword"
-          type="text"
-          label="Search..."
-          @input="updateKeyword"
-        />
-      </div>
-
-      <PatientCard
-        v-for="patient in patients"
-        :key="patient.id"
-        :patient="patient"
-      ></PatientCard>
-
-      <div class="pagination">
-        <router-link
-          id="page-prev"
-          :to="{ name: 'PatientList', query: { page: page - 1 } }"
-          rel="prev"
-          v-if="page != 1"
-        >
-          Prev Page
-        </router-link>
-
-        <router-link
-          id="page-next"
-          :to="{ name: 'PatientList', query: { page: page + 1 } }"
-          rel="next"
-          v-if="hasNextPage"
-        >
-          Next Page
-        </router-link>
-      </div>
+  <div class="patients">
+    <div class="search-box">
+      <BaseInput
+        v-model="keyword"
+        type="text"
+        label="Search..."
+        @input="updateKeyword"
+      />
     </div>
-  </span>
+
+    <PatientCard
+      v-for="patient in patients"
+      :key="patient.id"
+      :patient="patient"
+    ></PatientCard>
+
+    <div class="pagination">
+      <router-link
+        id="page-prev"
+        :to="{ name: 'PatientList', query: { page: page - 1 } }"
+        rel="prev"
+        v-if="page != 1"
+      >
+        Prev Page
+      </router-link>
+
+      <router-link
+        id="page-next"
+        :to="{ name: 'PatientList', query: { page: page + 1 } }"
+        rel="next"
+        v-if="hasNextPage"
+      >
+        Next Page
+      </router-link>
+    </div>
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import PatientCard from '@/components/PatientCard.vue'
-import PatientService from '@/services/PatientService.js'
-import AuthService from '@/services/AuthService.js'
+import DoctorService from '@/services/DoctorService.js'
 export default {
+  inject: ['GStore'],
   name: 'PatientListView',
   props: {
     page: {
@@ -65,7 +63,7 @@ export default {
   },
   // eslint-disable-next-line no-unused-vars
   beforeRouteEnter(routeTo, routeFrom, next) {
-    PatientService.getPatients(3, parseInt(routeTo.query.page) || 1)
+    DoctorService.getPatients(3, parseInt(routeTo.query.page) || 1)
       .then((response) => {
         next((comp) => {
           comp.patients = response.data
@@ -79,12 +77,12 @@ export default {
   beforeRouteUpdate(routeTo) {
     var queryFunction
     if (this.keyword == null || this.keyword === '') {
-      queryFunction = PatientService.getPatients(
+      queryFunction = DoctorService.getPatients(
         3,
         parseInt(routeTo.query.page) || 1
       )
     } else {
-      queryFunction = PatientService.getPatientByKeyword(
+      queryFunction = DoctorService.getPatientByKeyword(
         this.keyword,
         3,
         parseInt(routeTo.query.page) || 1
@@ -104,9 +102,9 @@ export default {
     updateKeyword() {
       var queryFunction
       if (this.keyword === '') {
-        queryFunction = PatientService.getPatients(3, 1)
+        queryFunction = DoctorService.getPatients(3, 1)
       } else {
-        queryFunction = PatientService.getPatientByKeyword(this.keyword, 3, 1)
+        queryFunction = DoctorService.getPatientByKeyword(this.keyword, 3, 1)
       }
 
       queryFunction
@@ -127,8 +125,10 @@ export default {
       let totalPages = Math.ceil(this.totalPatients / 3)
       return this.page < totalPages
     },
-    isUser() {
-      return AuthService.hasRoles('ROLE_USER')
+    sortPatients: function () {
+      return this.patients.filter(
+        (i) => i.doctor.firstname === this.GStore.user.firstname
+      )
     }
   }
 }

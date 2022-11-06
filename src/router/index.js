@@ -1,39 +1,59 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Home from '@/views/HomePage.vue'
 import PatientListView from '@/views/PatientListView.vue'
-import AboutView from '../views/AboutView.vue'
 import PatientLayoutView from '@/views/patient/PatientLayoutView.vue'
 import PatientDetailView from '@/views/patient/PatientDetailView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 import NetWorkErrorView from '@/views/NetworkErrorView.vue'
-import AddPatient from '@/views/PatientForm.vue'
+import AddVaccine from '@/views/AddVaccineForm.vue'
 import NProgress from 'nprogress'
 import GStore from '@/store'
-import PatientService from '@/services/PatientService'
 import DoctorService from '@/services/DoctorService.js'
+import AdminService from '@/services/AdminService.js'
+import UserService from '@/services/UserService'
 import Login from '@/views/LoginFormView.vue'
 import Register from '@/views/RegisterFormView.vue'
 import AddComment from '@/views/patient/DoctorComment.vue'
-import AddRole from '@/views/AddRole.vue'
 import AddDoctor from '@/views/AddDoctorForm.vue'
 import UserInfo from '@/views/UserInfoView.vue'
+import AddPatientRole from '@/views/role/AddPatientRole.vue'
+import AddDoctorRole from '@/views/role/AddDoctorRole.vue'
+import RemoveDoctorRole from '@/views/role/RemoveDoctorRole.vue'
 const routes = [
   {
     path: '/',
-    name: 'PatientList',
-    component: PatientListView,
-    props: (route) => ({ page: parseInt(route.query.page) || 1 })
+    name: 'HomePage',
+    component: Home,
+    props: true
   },
   {
-    path: '/about',
-    name: 'about',
-    component: AboutView
+    path: '/patient-list',
+    name: 'PatientList',
+    component: PatientListView,
+    beforeEnter: () => {
+      return UserService.getUserID(GStore.currentUser.id)
+        .then((response) => {
+          GStore.user = response.data
+        })
+        .catch((error) => {
+          if (error.response && error.response.start == 404) {
+            return {
+              name: '404Resource',
+              params: { resource: 'user' }
+            }
+          } else {
+            return { name: 'NetworkError' }
+          }
+        })
+    },
+    props: (route) => ({ page: parseInt(route.query.page) || 1 })
   },
   {
     path: '/userinfo',
     name: 'UserInfo',
     component: UserInfo,
     beforeEnter: () => {
-      return DoctorService.getUserID(GStore.currentUser.id)
+      return UserService.getUserID(GStore.currentUser.id)
         .then((response) => {
           GStore.users = response.data
         })
@@ -41,7 +61,7 @@ const routes = [
           if (error.response && error.response.start == 404) {
             return {
               name: '404Resource',
-              parames: { resource: 'patient' }
+              params: { resource: 'patient' }
             }
           } else {
             return { name: 'NetworkError' }
@@ -54,7 +74,7 @@ const routes = [
     name: 'PatientLayoutView',
     component: PatientLayoutView,
     beforeEnter: (to) => {
-      return PatientService.getPatient(to.params.id)
+      return DoctorService.getPatient(to.params.id)
         .then((response) => {
           GStore.patients = response.data
         })
@@ -87,37 +107,31 @@ const routes = [
   },
 
   {
-    path: '/add-patient',
-    name: 'AddPatient',
-    component: AddPatient,
+    path: '/save-vaccine',
+    name: 'AddVaccine',
+    component: AddVaccine,
     beforeEnter: () => {
-      return DoctorService.getPatients()
+      return DoctorService.getPatientList()
         .then((response) => {
           GStore.patients = response.data
-          DoctorService.getDoctors().then((response) => {
-            GStore.doctors = response.data
-          })
-          DoctorService.getVaccine().then((response) => {
+          AdminService.getVaccines().then((response) => {
             GStore.vaccines = response.data
           })
         })
         .catch(() => {
           GStore.patient = null
-          console.log('cannot load doctor')
+          console.log('cannot load patient or vaccine')
         })
     }
   },
   {
-    path: '/add-role',
-    name: 'AddRole',
-    component: AddRole,
+    path: '/add-patient-role',
+    name: 'AddPatientRole',
+    component: AddPatientRole,
     beforeEnter: () => {
-      return DoctorService.getUser()
+      return AdminService.getUser()
         .then((response) => {
           GStore.users = response.data
-          DoctorService.getDoctors().then((response) => {
-            GStore.doctors = response.data
-          })
         })
         .catch(() => {
           GStore.users = null
@@ -125,7 +139,36 @@ const routes = [
         })
     }
   },
-
+  {
+    path: '/add-doctor-role',
+    name: 'AddDoctorRole',
+    component: AddDoctorRole,
+    beforeEnter: () => {
+      return AdminService.getUser()
+        .then((response) => {
+          GStore.users = response.data
+        })
+        .catch(() => {
+          GStore.users = null
+          console.log('cannot load doctor')
+        })
+    }
+  },
+  {
+    path: '/remove-doctor-role',
+    name: 'RemoveDoctorRole',
+    component: RemoveDoctorRole,
+    beforeEnter: () => {
+      return AdminService.getDoctorList()
+        .then((response) => {
+          GStore.doctors = response.data
+        })
+        .catch(() => {
+          GStore.users = null
+          console.log('cannot load doctor')
+        })
+    }
+  },
   {
     path: '/404/:resource',
     name: '404Resource',
@@ -153,23 +196,21 @@ const routes = [
     component: NetWorkErrorView
   },
   {
-    path: '/add-doctor',
+    path: '/save-doctor',
     name: 'AddDoctor',
     component: AddDoctor,
     beforeEnter: () => {
-      return DoctorService.getPatients()
+      return DoctorService.getPatientList()
         .then((response) => {
           GStore.patients = response.data
-          DoctorService.getDoctors().then((response) => {
+          AdminService.getDoctorList().then((response) => {
             GStore.doctors = response.data
-          })
-          DoctorService.getVaccine().then((response) => {
-            GStore.vaccines = response.data
           })
         })
         .catch(() => {
-          GStore.patient = null
-          console.log('cannot load doctor')
+          GStore.patients = null
+          GStore.doctors = null
+          console.log('cannot load data')
         })
     }
   }

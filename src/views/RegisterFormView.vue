@@ -6,7 +6,7 @@
         src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
         class="profile-img-card"
       />
-      <Form @submit="handleRegiter" :validation-schema="schema">
+      <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
           <div class="form-group">
             <label for="username">Username</label>
@@ -114,17 +114,12 @@ export default {
       schema
     }
   },
-  mounted() {
-    if (this.GStore.currentUser) {
-      this.$router.push('/patient')
-    }
-  },
   methods: {
     // eslint-disable-next-line
-    handleRegiter(user){
+    handleRegister(user){
       AuthService.register(user)
         .then(() => {
-          this.$router.push({ path: '/' })
+          this.$router.push({ name: 'HomePage' })
         })
         .catch(() => {
           this.message = 'could not register'

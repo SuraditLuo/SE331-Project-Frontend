@@ -15,7 +15,7 @@
       </ul>
       <ul v-if="GStore.currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
-          <router-link to="/" class="nav-link">
+          <router-link :to="{ name: 'UserInfo' }" class="nav-link">
             <font-awesome-icon icon="user" />
             {{ GStore.currentUser.username }}
           </router-link>
@@ -28,22 +28,59 @@
       </ul>
     </nav>
   </div>
-  <nav>
-    <router-link :to="{ name: 'PatientList' }">Home</router-link>
-    <span v-if="isAdmin">
-      |
-      <router-link :to="{ name: 'AddPatient' }"> Add Vaccine data </router-link>
-      |
-      <router-link :to="{ name: 'AddRole' }"> Add Role</router-link>
-      |
-      <router-link :to="{ name: 'AddDoctor' }"> Add Doctor</router-link>
-    </span>
-    <span v-if="isUser">
-      |
-      <router-link :to="{ name: 'UserInfo' }"> UserInfo</router-link>
-    </span>
-  </nav>
-  <router-view />
+  <table>
+    <tr>
+      <td class="navigate-block">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'HomePage' }"
+              ><span>Home</span></router-link
+            >
+          </li>
+          <span v-if="isAdmin">
+            <li>
+              <router-link :to="{ name: 'AddVaccine' }">
+                <span>Add Patient vaccine</span>
+              </router-link>
+            </li>
+            <li>
+              <router-link :to="{ name: 'AddDoctor' }">
+                <span>Add patient doctor</span></router-link
+              >
+            </li>
+            <li class="role-section">
+              <span>Role Configuration</span>
+            </li>
+            <ul class="list-role">
+              <li>
+                <router-link :to="{ name: 'AddPatientRole' }">
+                  <span>Add Patient Role</span></router-link
+                >
+              </li>
+              <li>
+                <router-link :to="{ name: 'AddDoctorRole' }">
+                  <span>Add Doctor Role</span></router-link
+                >
+              </li>
+              <li>
+                <router-link :to="{ name: 'RemoveDoctorRole' }">
+                  <span>Remove Doctor Role</span></router-link
+                >
+              </li>
+            </ul>
+          </span>
+          <span v-if="isDoctor">
+            <li>
+              <router-link :to="{ name: 'PatientList' }"
+                ><span>Your patient(s)</span></router-link
+              >
+            </li>
+          </span>
+        </ul>
+      </td>
+      <td class="content-block"><router-view /></td>
+    </tr>
+  </table>
 </template>
 <script>
 import AuthService from '@/services/AuthService.js'
@@ -58,18 +95,48 @@ export default {
     },
     isUser() {
       return AuthService.hasRoles('ROLE_USER')
+    },
+    isDoctor() {
+      return AuthService.hasRoles('ROLE_DOCTOR')
     }
   },
   methods: {
     logout() {
       AuthService.logout()
-      this.$router.push({ path: '/' })
+      this.$router.push({ name: 'HomePage' })
     }
   }
 }
 </script>
 
 <style>
+.role-section {
+  font-style: italic;
+  border-top: 0.25rem solid lightgrey;
+}
+.navigate-block {
+  display: inline-block;
+  text-align: left;
+  width: 400px;
+  height: auto;
+  border: 0.25rem solid lightgray;
+  margin-left: 3rem;
+  margin-right: 2.25rem;
+}
+.navigate-block ul {
+  list-style-type: none;
+}
+.navigate-block ul li {
+  margin-bottom: 0.25rem;
+}
+.navigate-block ul li span {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.25rem;
+  color: rgb(31, 31, 31);
+}
+.content-block {
+  padding-left: 10rem;
+}
 h5,
 h1,
 li,
@@ -111,7 +178,6 @@ nav a {
   font-weight: bold;
   color: #2c3e50;
 }
-
 nav a.router-link-exact-active {
   color: #51e2f5;
 }

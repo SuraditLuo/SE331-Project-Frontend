@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>Add Role Doctor</h3>
-    <form @submit.prevent="saveRole">
+    <form @submit.prevent="AddRoleDoctor">
       <select v-model="user.id">
         <option
           v-for="(option, index) in GStore.users"
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import DoctorService from '@/services/DoctorService'
+import AdminService from '@/services/AdminService'
 export default {
   inject: ['GStore'],
   data() {
@@ -56,8 +56,8 @@ export default {
     }
   },
   methods: {
-    saveRole() {
-      return DoctorService.addDoctorUser(this.user)
+    AddRoleDoctor() {
+      return AdminService.addDoctorRole(this.user)
         .then((response) => {
           console.log(response)
           this.$router.push({
@@ -76,7 +76,7 @@ export default {
         })
     },
     AddRolePatient() {
-      return DoctorService.addPatient(this.user)
+      return AdminService.addPatientRole(this.user)
         .then((response) => {
           console.log(response)
           this.$router.push({
@@ -95,7 +95,7 @@ export default {
         })
     },
     RemoveRoleDoctor() {
-      return DoctorService.RemoveDoctor(this.user)
+      return AdminService.RemoveDoctor(this.user)
         .then((response) => {
           console.log(response)
           this.$router.push({
