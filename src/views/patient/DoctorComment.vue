@@ -31,7 +31,7 @@ export default {
         .then((response) => {
           console.log(response)
           this.$router.push({
-            name: 'PatientLayoutView',
+            name: 'PatientList',
             params: { id: this.comment.commentTo.id }
           })
           this.GStore.flashMessage =

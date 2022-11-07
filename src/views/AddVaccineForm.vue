@@ -108,7 +108,7 @@ export default {
         .then((response) => {
           console.log(response)
           this.$router.push({
-            name: 'Home'
+            name: 'HomePage'
           })
           this.GStore.flashMessage = 'Successfully assign the vaccine data.'
           setTimeout(() => {
