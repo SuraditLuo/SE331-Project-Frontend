@@ -4,17 +4,8 @@
     <h1>{{ GStore.patients.firstname }} {{ GStore.patients.lastname }}</h1>
     <div id="nav">
       <router-link :to="{ name: 'PatientDetails' }">About</router-link>
-
-      <span
-        v-if="
-          GStore.patients.doctor.firstname != null &&
-          isDoctor &&
-          GStore.currentUser.username == GStore.patients.doctor.firstname
-        "
-      >
-        |
-        <router-link :to="{ name: 'AddComment' }">Add Comment</router-link>
-      </span>
+      |
+      <router-link :to="{ name: 'AddComment' }">Add Comment</router-link>
     </div>
     <router-view :patients="GStore.patients" />
   </div>

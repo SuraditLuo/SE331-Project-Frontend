@@ -10,7 +10,6 @@
       />
       <button type="submit" class="button-6">Submit</button>
     </form>
-    <pre>{{ user }}</pre>
   </div>
 </template>
 

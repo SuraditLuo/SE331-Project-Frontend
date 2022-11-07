@@ -40,8 +40,7 @@ export default {
         .then((response) => {
           console.log(response)
           this.$router.push({
-            name: 'PatientDetails',
-            params: { id: response.data.id }
+            name: 'HomePage'
           })
           this.GStore.flashMessage = 'Successfully add doctor.'
           setTimeout(() => {

@@ -10,11 +10,16 @@
       />
     </div>
 
-    <PatientCard
-      v-for="patient in patients"
-      :key="patient.id"
-      :patient="patient"
-    ></PatientCard>
+    <div v-for="patient in patients" :key="patient.id">
+      <div v-if="patient.doctor.firstname === this.GStore.user.firstname">
+        <PatientCard :key="patient.id" :patient="patient"></PatientCard>
+      </div>
+      <PatientCard
+        :key="patient.id"
+        :patient="patient"
+        class="hide-patient"
+      ></PatientCard>
+    </div>
 
     <div class="pagination">
       <router-link
@@ -124,16 +129,44 @@ export default {
     hasNextPage() {
       let totalPages = Math.ceil(this.totalPatients / 3)
       return this.page < totalPages
-    },
-    sortPatients: function () {
-      return this.patients.filter(
-        (i) => i.doctor.firstname === this.GStore.user.firstname
-      )
     }
   }
 }
 </script>
 <style scoped>
+.hide-patient {
+  display: none;
+}
+.patient-card div {
+  display: inline-block;
+  text-align: left;
+}
+img {
+  max-width: 7.5rem;
+  max-height: 7.5rem;
+  margin-right: 4rem;
+  margin-top: 0;
+  border: 0.125rem solid azure;
+}
+.patient-card {
+  padding: 20px;
+  width: 700px;
+  height: 150px;
+  cursor: pointer;
+  border: 2px solid #0000008d;
+  border-radius: 25px;
+  margin-bottom: 18px;
+  background-color: #a28089;
+}
+.patient-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+.patient-link {
+  color: #f5e76f;
+  text-decoration: none;
+}
 h1 {
   border-radius: 5rem;
   background-color: azure;

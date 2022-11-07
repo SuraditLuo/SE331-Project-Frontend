@@ -29,8 +29,8 @@
     v-for="comments in patients.comments"
     v-bind:key="comments.id"
   >
-    <label>From {{ comments.commentBy.name }}</label>
-    <h4>{{ comments.content }}</h4>
+    <label>From {{ comments.commentBy.firstname }}</label>
+    <h5>{{ comments.content }}</h5>
   </div>
 </template>
 
@@ -58,14 +58,19 @@ td {
   padding-left: 6.5rem;
 }
 .comment {
-  background-color: rgb(149, 97, 13);
-  display: block;
-  margin: 0 10rem 2rem 10rem;
-  color: rgb(217, 250, 5);
-  padding-right: 15rem;
+  background-color: rgb(226, 224, 224);
+  border: 0.04rem solid lightgray;
+  margin-left: auto;
+  margin-right: auto;
+  margin: 0.55rem 7rem;
+  padding: 0rem 2rem;
+  box-shadow: 0.125rem 0.45rem #888888;
 }
 label {
   padding-right: 15rem;
-  color: rgb(222, 235, 142);
+  font-family: 'Courier New', Courier, monospace;
+}
+.comment h5 {
+  background-color: azure;
 }
 </style>

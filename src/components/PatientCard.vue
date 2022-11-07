@@ -5,9 +5,6 @@
   >
     <div class="patient-card">
       <div>
-        <img v-for="url in patient.imageUrls" :key="url" :src="url" />
-      </div>
-      <div>
         <h4>{{ patient.firstname }} {{ patient.lastname }}</h4>
         <h4>{{ patient.status }}</h4>
       </div>

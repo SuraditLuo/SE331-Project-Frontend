@@ -1,25 +1,61 @@
 <template>
   <div>
-    <img v-for="url in GStore.users.imageUrls" :key="url" :src="url" />
+    <table>
+      <tr>
+        <th>Profile</th>
+        <th>Information</th>
+      </tr>
+      <tr>
+        <td>
+          <img
+            id="profile-img"
+            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+            class="profile-img-card"
+          />
+        </td>
+        <td>
+          <h5>
+            Firstname: {{ GStore.users.firstname }} | Lastname:
+            {{ GStore.users.lastname }}
+          </h5>
+          <h5>E-mail: {{ GStore.users.email }}</h5>
+          <h5>
+            Age: {{ GStore.users.age }} | Address: {{ GStore.users.address }}
+          </h5>
+        </td>
+      </tr>
+    </table>
   </div>
-  <h5>firstname: {{ GStore.users.firstname }}</h5>
-
-  <h5>lastname: {{ GStore.users.lastname }}</h5>
-
-  <h5>email: {{ GStore.users.email }}</h5>
-
-  <h5>address: {{ GStore.users.address }}</h5>
-
-  <h5>age: {{ GStore.users.age }}</h5>
 </template>
 
 <script>
 // @ is an alias to /src
 export default {
-  inject: ['GStore']
+  inject: ['GStore'],
+  name: 'UserInfoCard',
+  props: {
+    user: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 <style scoped>
+h5 {
+  font-size: 1.2rem;
+}
+table,
+tr,
+th,
+td {
+  font-family: 'Courier New', Courier, monospace;
+  border: 1px solid;
+}
+img {
+  max-width: 100px;
+  max-height: 100px;
+}
 h1 {
   border-radius: 5rem;
   background-color: azure;

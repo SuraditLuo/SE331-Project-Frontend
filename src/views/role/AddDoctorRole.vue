@@ -3,12 +3,7 @@
     <h3>Add Role Doctor</h3>
     <form @submit.prevent="AddRoleDoctor">
       <select v-model="user.id">
-        <option
-          v-for="user in sortUsers"
-          :value="user.id"
-          :key="user.id"
-          selected="index === user.id"
-        >
+        <option v-for="user in sortUsers" :value="user.id" :key="user.id">
           {{ user.firstname }} {{ user.lastname }}
         </option>
       </select>

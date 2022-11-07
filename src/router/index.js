@@ -34,6 +34,9 @@ const routes = [
       return UserService.getUserID(GStore.currentUser.id)
         .then((response) => {
           GStore.user = response.data
+          DoctorService.getPatientList().then((response) => {
+            GStore.patients = response.data
+          })
         })
         .catch((error) => {
           if (error.response && error.response.start == 404) {
@@ -77,6 +80,11 @@ const routes = [
       return DoctorService.getPatient(to.params.id)
         .then((response) => {
           GStore.patients = response.data
+          return UserService.getUserID(GStore.currentUser.id).then(
+            (response) => {
+              GStore.users = response.data
+            }
+          )
         })
         .catch((error) => {
           if (error.response && error.response.start == 404) {
