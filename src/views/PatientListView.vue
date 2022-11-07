@@ -11,14 +11,10 @@
     </div>
 
     <div v-for="patient in patients" :key="patient.id">
-      <div v-if="patient.doctor.firstname === this.GStore.user.firstname">
+      <div v-if="patient.doctor == null"></div>
+      <div v-else-if="patient.doctor.firstname === this.GStore.user.firstname">
         <PatientCard :key="patient.id" :patient="patient"></PatientCard>
       </div>
-      <PatientCard
-        :key="patient.id"
-        :patient="patient"
-        class="hide-patient"
-      ></PatientCard>
     </div>
 
     <div class="pagination">
