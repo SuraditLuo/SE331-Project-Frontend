@@ -64,7 +64,7 @@ export default {
   },
   // eslint-disable-next-line no-unused-vars
   beforeRouteEnter(routeTo, routeFrom, next) {
-    DoctorService.getPatients(3, parseInt(routeTo.query.page) || 1)
+    DoctorService.getPatients(30, parseInt(routeTo.query.page) || 1)
       .then((response) => {
         next((comp) => {
           comp.patients = response.data
@@ -103,9 +103,9 @@ export default {
     updateKeyword() {
       var queryFunction
       if (this.keyword === '') {
-        queryFunction = DoctorService.getPatients(3, 1)
+        queryFunction = DoctorService.getPatients(30, 1)
       } else {
-        queryFunction = DoctorService.getPatientByKeyword(this.keyword, 3, 1)
+        queryFunction = DoctorService.getPatientByKeyword(this.keyword, 30, 1)
       }
 
       queryFunction
@@ -123,7 +123,7 @@ export default {
 
   computed: {
     hasNextPage() {
-      let totalPages = Math.ceil(this.totalPatients / 3)
+      let totalPages = Math.ceil(this.totalPatients / 30)
       return this.page < totalPages
     }
   }
